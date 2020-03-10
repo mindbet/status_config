@@ -1,0 +1,4 @@
+status_config.message.edit:
+  title: 'Edit status message'
+  description: 'Configure custom status message.'
+  route_name: status_config.message.edit

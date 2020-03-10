@@ -1,0 +1,7 @@
+status_config.message.edit:
+  path: '/admin/config/status_config/settings'
+  defaults:
+    _form: '\Drupal\status_config\Form\StatusConfigSettings'
+    _title: 'Status config'
+  requirements:
+    _permission: 'administer site configuration'

@@ -1,0 +1,64 @@
+<?php
+
+/**
+ * @file
+ * Contains status_config.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function status_config_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the read_to_me module.
+    case 'help.page.status_config':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Style the drupal status messages.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ *
+ * Add twig file suggestion for the status_messages.
+ */
+function status_config_theme_suggestions_status_messages_alter(array &$suggestions, array $variables) {
+  $suggestions[] = 'status_config__better';
+}
+
+/**
+ * Implements hook_theme().
+ *
+ * Use this modules custom twig files fortheme hook status_messages.
+ */
+function status_config_theme() {
+  return [
+    'status_config__better' => [
+      'variables' => ['status_headings' => [], 'message_list' => NULL],
+      'template' => 'status-config--better',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ *
+ * Pass colors from settings form to twig file.
+ */
+function status_config_preprocess_status_config__better(&$variables) {
+  $config = \Drupal::config('status_config.settings');
+
+  $variables['color_status_text'] = $config->get('color_status_text') ?? 'black';
+  $variables['color_status_bg'] = $config->get('color_status_bg') ?? '#bfe8f3';
+  $variables['border_color'] = $config->get('border_color') ?? 'white';
+  $variables['color_error_bg'] = $config->get('color_error_bg') ?? '#DD0C15';
+  $variables['color_error_text'] = $config->get('color_error_text') ?? 'white';
+  $variables['shadow_color'] = $config->get('shadow_color') ?? '#999999';
+
+}

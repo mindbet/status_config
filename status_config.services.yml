@@ -1,0 +1,6 @@
+services:
+  status_config.event_subscriber:
+    class: Drupal\status_config\EventSubscriber\StatusConfigSubscriber
+    arguments: ['@logger.factory','@messenger','@config.factory']
+    tags:
+      - {name: event_subscriber}

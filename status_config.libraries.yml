@@ -1,0 +1,8 @@
+# Library to load the status configured messages css files.
+library:
+  version: 1.x
+  css:
+    theme:
+      css/status-config-messages.css: {}
+  dependencies:
+    - core/drupal

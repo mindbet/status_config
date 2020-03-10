@@ -1,0 +1,64 @@
+{#
+/**
+ * @file
+ * Theme override for status messages.
+ *
+ * Displays status, error, and warning messages, grouped by type.
+ *
+ * An invisible heading identifies the messages for assistive technology.
+ * Sighted users see a colored box. See http://www.w3.org/TR/WCAG-TECHS/H69.html
+ * for info.
+ *
+ * Add an ARIA label to the contentinfo area so that assistive technology
+ * user agents will better describe this landmark.
+ *
+ * Available variables:
+ * - message_list: List of messages to be displayed, grouped by type.
+ * - status_headings: List of all status types.
+ * - display: (optional) May have a value of 'status' or 'error' when only
+ *   displaying messages of that specific type.
+ * - attributes: HTML attributes for the element, including:
+ *   - class: HTML classes.
+ */
+#}
+{{ attach_library('status_config/library') }}
+
+{% set color_text = color_status_text %}
+{% set color_bg = color_status_bg %}
+{% set border_color = border_color %}
+{% set shadow_color = shadow_color %}
+
+
+
+{% if message_list is not empty %}
+  <div class="c-status-message-wrapper" id="js-status-message">
+    {% for type, messages in message_list %}
+      <div class="js-message" role="contentinfo" aria-label="{{ status_headings[type] }}">
+
+        {% if type == 'error' %}
+          {% set color_text = color_error_text %}
+          {% set color_bg = color_error_bg %}
+        {% endif %}
+
+        <div class="c-status-message c-status-message--{{ type is defined ? type : '' }}"
+             {% if type == 'error' %}role="alert"{% endif %} style="background-color: {{ color_bg }}; color: {{ color_text }}; border: solid 2px {{ border_color }}; box-shadow: -6px 6px 3px {{ shadow_color }};">
+
+          <div class="c-status-message__text">
+            {% if status_headings[type] %}
+              <h2 class="visually-hidden">{{ status_headings[type] }}</h2>
+            {% endif %}
+            {% if messages|length > 1 %}
+              <ul>
+                {% for message in messages %}
+                  <li>{{ message }}</li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              {{ messages|first }}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
